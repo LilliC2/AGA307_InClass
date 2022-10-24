@@ -1,16 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static EnemyManager;
 
-public class Enemy : MonoBehaviour
+public class Enemy : GameBehaviour
 {
+    //events
+    public static event Action<GameObject> OnEnemyHit = null; //on signifies event
+    public static event Action<GameObject> OnEnemyDie = null; //null meaning empty, no event is happening
+
+
+
     public EnemyType myType;
     
-    public float myHealth = 2f;
+    public float myHealth = 20f;
     public float mySpeed = 100f;
     
-    EnemyManager _EM; // reference for enemyManager script / short code so we know its a script/manger class
 
     [Header("Ai")]
     public PatrolType myPatrol;
@@ -22,7 +28,6 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        _EM = FindObjectOfType<EnemyManager>();
         SetUp();
         SetUpAI();
         StartCoroutine(Move());
@@ -60,6 +65,30 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.H))
+            Hit(10);
+
+
+    }
+
+    public void Hit(int _damage)
+    {
+        myHealth -= _damage;
+
+
+        if (myHealth <= 0)
+            Die();
+        else
+        {
+            OnEnemyHit?.Invoke(this.gameObject);
+        }
+        
+    }
+
+    void Die()
+    {
+        StopAllCoroutines();
+        OnEnemyDie?.Invoke(this.gameObject); //if OnEnemyDie
         
     }
 
@@ -72,7 +101,7 @@ public class Enemy : MonoBehaviour
                 moveToPos = _EM.spawnPoints[patrolPoint];
                 //says if patrol point != _EM.spawnPoints.Length, patrolPoint ++, else patrolPoint = 0
                 // ? is the if, : is the else (? is true, : is false)
-                patrolPoint = patrolPoint != _EM.spawnPoints.Length ? patrolPoint + 1 : 0;
+                patrolPoint = patrolPoint != _EM.spawnPoints.Length - 1 ? patrolPoint + 1 : 0;
                 break;
             
             case PatrolType.Loop:

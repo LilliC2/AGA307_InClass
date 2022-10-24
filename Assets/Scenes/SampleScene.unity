@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Laser
       objectReference: {fileID: 0}
+    - target: {fileID: 7535854526523041748, guid: 1c236994a7a8f4d4f95359f2f5c05744, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -6338249849512669507, guid: 1c236994a7a8f4d4f95359f2f5c05744, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1c236994a7a8f4d4f95359f2f5c05744, type: 3}
@@ -2498,7 +2502,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23980706db15a8f4084acdd41e076739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameState: 0
+  dontDestroy: 0
+  gameState: 2
   difficulty: 0
   score: 0
 --- !u!4 &723448674
@@ -7526,6 +7531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56631810d76d3bd4ea0424135cc6ea2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontDestroy: 0
   spawnPoints:
   - {fileID: 56473262}
   - {fileID: 1023090613}
@@ -7549,6 +7555,7 @@ MonoBehaviour:
   enemies: []
   spawnDelay: 2
   spawnCount: 10
+  killCondition: Two
 --- !u!4 &2071905797
 Transform:
   m_ObjectHideFlags: 0

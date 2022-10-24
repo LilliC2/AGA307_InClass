@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : Singleton<EnemyManager>
 {
+   
+   
     public Transform[] spawnPoints;
     public GameObject[] enemyTypes;
 
@@ -11,7 +13,8 @@ public class EnemyManager : MonoBehaviour
     public float spawnDelay = 2f;
     public int spawnCount = 10;
 
-    GameManager _GM;
+    public string killCondition = "Two";
+
 
     public enum EnemyType
     {
@@ -23,10 +26,19 @@ public class EnemyManager : MonoBehaviour
         Linear, Loop, Random
     }
 
+    private void OnEnable()
+    {
+        Enemy.OnEnemyDie += KillEnemy;
+    }
+
+    private void OnDisable()
+    {
+        Enemy.OnEnemyDie -= KillEnemy; //parameters line up, same data type
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        _GM = FindObjectOfType<GameManager>();
         StartCoroutine(SpawnDelay());
 
     }
@@ -40,12 +52,31 @@ public class EnemyManager : MonoBehaviour
     {
         yield return new WaitForSeconds(spawnDelay);
         if(_GM.gameState == GameState.Playing)
-            SpawnEnemies();
+            SpawnEnemy();
         if(enemies.Count <= spawnCount)
         {
             StartCoroutine(SpawnDelay());
         }
 
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I)) SpawnEnemy();
+        if (Input.GetKeyDown(KeyCode.K)) KillAllEnemies();
+        if (Input.GetKeyDown(KeyCode.O)) KillSpecificEnemy(killCondition);
+    }
+
+
+    void SpawnEnemy()
+    {
+        int enemyNumber = Random.Range(0, enemyTypes.Length);
+        int spawnPoint = Random.Range(0, spawnPoints.Length);
+        GameObject enemy = Instantiate(enemyTypes[enemyNumber], spawnPoints[spawnPoint].position, spawnPoints[spawnPoint].rotation, transform);
+        enemies.Add(enemy);
+        print("Enemy Count: " + enemies.Count);
     }
 
     void SpawnEnemies()
@@ -65,7 +96,36 @@ public class EnemyManager : MonoBehaviour
         //print total number of enemies we have spawned
         print("Enemy Count: " + enemies.Count);
     }
+    
+    public void KillEnemy(GameObject _enemy)
+    {
+        if (enemies.Count == 0)
+            return;
 
+        Destroy(_enemy);
+        enemies.Remove(_enemy);
+    }
+
+    void KillSpecificEnemy(string _condition)
+    {
+        for(int i = 0; i < enemies.Count; i++)
+        {
+            if (enemies[i].name.Contains(_condition))
+                KillEnemy(enemies[i]);
+        }
+    }
+
+    void KillAllEnemies()
+    {
+        if (enemies.Count == 0)
+            return;
+
+        for(int i = 0; i < enemies.Count; i++)
+        {
+            Destroy(enemies[i]);
+        }
+        enemies.Clear();
+    }
     //void SpawnEnemy()
     //{
     //    int enemyNumber = Random.Range(0, enemyTypes.Length);
@@ -73,12 +133,7 @@ public class EnemyManager : MonoBehaviour
     //    GameObject enemy = Instantiate(enemyTypes[enemyNumber])
     //}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+  
     public Transform GetRandomSpointPoint()
     {
         //return sppawnpoint between 0 and length of array
