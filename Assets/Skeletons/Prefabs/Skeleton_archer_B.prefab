@@ -207,6 +207,7 @@ GameObject:
   - component: {fileID: 402856}
   - component: {fileID: 9550402}
   - component: {fileID: -4694648679828182555}
+  - component: {fileID: -7695948330115338954}
   m_Layer: 0
   m_Name: Skeleton_archer_B
   m_TagString: Untagged
@@ -266,7 +267,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myType: 2
+  myHealth: 20
   mySpeed: 2
+  myPatrol: 0
+--- !u!136 &-7695948330115338954
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108450}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.16838531
+  m_Height: 1.4537467
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8312873, z: 0}
 --- !u!1 &110598
 GameObject:
   m_ObjectHideFlags: 0

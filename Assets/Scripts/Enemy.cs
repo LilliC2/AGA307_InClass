@@ -74,7 +74,7 @@ public class Enemy : GameBehaviour
     public void Hit(int _damage)
     {
         myHealth -= _damage;
-
+        print("health: " + myHealth);
 
         if (myHealth <= 0)
             Die();
@@ -135,5 +135,14 @@ public class Enemy : GameBehaviour
         StartCoroutine(Move());
 
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Projectile")) 
+        {
+            Hit(200);
+            
+        }
     }
 }

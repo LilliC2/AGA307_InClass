@@ -52,7 +52,9 @@ public class FiringPoint : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(StopLaser());
             GameObject party = Instantiate(hitSparks, hit.point, hit.transform.rotation);
-            Destroy(party, 2);  
+            Destroy(party, 2);
+
+
         }
     }
 

@@ -76,7 +76,8 @@ public class EnemyManager : Singleton<EnemyManager>
         int spawnPoint = Random.Range(0, spawnPoints.Length);
         GameObject enemy = Instantiate(enemyTypes[enemyNumber], spawnPoints[spawnPoint].position, spawnPoints[spawnPoint].rotation, transform);
         enemies.Add(enemy);
-        print("Enemy Count: " + enemies.Count);
+        //print("Enemy Count: " + enemies.Count);
+        _UI.EnemyCountUpdate(enemies.Count);
     }
 
     void SpawnEnemies()
@@ -104,6 +105,8 @@ public class EnemyManager : Singleton<EnemyManager>
 
         Destroy(_enemy);
         enemies.Remove(_enemy);
+
+        _UI.EnemyCountUpdate(enemies.Count);
     }
 
     void KillSpecificEnemy(string _condition)
