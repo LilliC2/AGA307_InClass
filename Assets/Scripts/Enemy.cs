@@ -77,7 +77,7 @@ public class Enemy : GameBehaviour
         print("health: " + myHealth);
 
         if (myHealth <= 0)
-            Die();
+            Die();  
         else
         {
             OnEnemyHit?.Invoke(this.gameObject);
