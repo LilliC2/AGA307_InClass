@@ -1,148 +1,152 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using static EnemyManager;
+using UnityEngine.UI;
 
 public class Enemy : GameBehaviour
 {
-    //events
-    public static event Action<GameObject> OnEnemyHit = null; //on signifies event
-    public static event Action<GameObject> OnEnemyDie = null; //null meaning empty, no event is happening
-
-
-
     public EnemyType myType;
-    
-    public float myHealth = 20f;
-    public float mySpeed = 100f;
-    
+    public float mySpeed;
+    public float myHealth;
+    float myMaxHealth;
 
-    [Header("Ai")]
+    [Header("AI")]
     public PatrolType myPatrol;
-    Transform moveToPos;    //need for random patrol
-    int patrolPoint = 0;    //need for linear patrol
-    bool reverse = false;   //need for loop patrol
-    Transform startPos;     //need for loop patrol
-    Transform endPos;       //need for loop patrol
+    public int patrolPoint = 0;            //Needed for linear patrol movement
+    public bool reverse = false;           //Needed for repeat patrol movement
+    public Transform startPos;             //Needed for repeat patrol movement
+    public Transform endPos;               //Needed for repeat patrol movement
+    public Transform moveToPos;
+
+    [Header("Health Bar")]
+    public Slider healthBarSlider;
+    public TMP_Text healthBarText;
+
 
     void Start()
     {
-        SetUp();
-        SetUpAI();
+        Setup();
+        SetupAI();
         StartCoroutine(Move());
+        transform.SetPositionAndRotation(transform.position, transform.rotation);
     }
 
-    void SetUp()
+    void Setup()
     {
-        switch(myType) //switch is essentially casewhere
+        float healthModifier = 1;
+        float speedModifier = 1;
+        switch(_GM.difficulty)
+        {
+            case Difficulty.Easy:
+                healthModifier = 1f;
+                speedModifier = 1f;
+                break;
+            case Difficulty.Medium:
+                healthModifier = 2f;
+                speedModifier = 1.2f;
+                break;
+            case Difficulty.Hard:
+                healthModifier = 3f;
+                speedModifier = 1.5f;
+                break;
+            default:
+                healthModifier = 1f;
+                speedModifier = 1f;
+                break;
+        }
+
+        switch(myType)
         {
             case EnemyType.OneHand:
-                myHealth = 100f;
-                mySpeed = 2f;
+                myHealth = 100f * healthModifier;
+                mySpeed = 2f * speedModifier;
                 myPatrol = PatrolType.Linear;
                 break;
             case EnemyType.TwoHand:
-                myHealth = 200f;
-                mySpeed = 1f;
+                myHealth = 200f * healthModifier;
+                mySpeed = 1f * speedModifier;
                 myPatrol = PatrolType.Loop;
                 break;
             case EnemyType.Archer:
-                myHealth = 75f;
-                mySpeed = 4f;
+                myHealth = 60f * healthModifier;
+                mySpeed = 5f * speedModifier;
                 myPatrol = PatrolType.Random;
-                break ;
+                break;
         }
 
+        myMaxHealth = myHealth;
+        healthBarSlider.maxValue = myHealth;
+        UpdateHealthBar();
+        
     }
 
-    void SetUpAI()
+    void SetupAI()
     {
-        startPos = transform;
-        endPos = _EM.GetRandomSpointPoint();
+        startPos = Instantiate(new GameObject(), transform.position, transform.rotation).transform;
+        endPos = _EM.GetRandomSpawnPoint();
         moveToPos = endPos;
     }
 
-    void Update()
+    IEnumerator Move()
+    {
+        switch(myPatrol)
+        {
+            case PatrolType.Linear:
+                moveToPos = _EM.spawnPoints[patrolPoint];
+                patrolPoint = patrolPoint != _EM.spawnPoints.Length ? patrolPoint + 1 : 0;
+                break;
+            case PatrolType.Random:
+                moveToPos = _EM.GetRandomSpawnPoint();
+                break;
+            case PatrolType.Loop:
+                moveToPos = reverse ? startPos : endPos;
+                reverse = !reverse;
+                break;
+        }
+
+        transform.LookAt(moveToPos);
+        while (Vector3.Distance(transform.position, moveToPos.position) > 0.3f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, moveToPos.position, Time.deltaTime * mySpeed);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1);
+
+        StartCoroutine(Move());
+    }
+
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.H))
             Hit(10);
-
-
     }
 
     public void Hit(int _damage)
     {
         myHealth -= _damage;
-        print("health: " + myHealth);
-
+        UpdateHealthBar();
         if (myHealth <= 0)
+        {
             Die();
+        }
         else
         {
-            OnEnemyHit?.Invoke(this.gameObject);
+            GameEvents.ReportEnemyHit(this.gameObject);
         }
-        
+    }
+    
+    void UpdateHealthBar()
+    {
+        healthBarSlider.value = myHealth;
+        healthBarText.text = myHealth + "/" + myMaxHealth;
     }
 
     void Die()
     {
         StopAllCoroutines();
-        OnEnemyDie?.Invoke(this.gameObject); //if OnEnemyDie
-        
-    }
-
-    IEnumerator Move()
-    {
-
-        switch(myPatrol)
-        {
-            case PatrolType.Linear:
-                moveToPos = _EM.spawnPoints[patrolPoint];
-                //says if patrol point != _EM.spawnPoints.Length, patrolPoint ++, else patrolPoint = 0
-                // ? is the if, : is the else (? is true, : is false)
-                patrolPoint = patrolPoint != _EM.spawnPoints.Length - 1 ? patrolPoint + 1 : 0;
-                break;
-            
-            case PatrolType.Loop:
-                moveToPos = reverse ? startPos : endPos;
-                reverse = !reverse; //flip reverse bool
-                break;
-            
-            case PatrolType.Random:
-                moveToPos = _EM.GetRandomSpointPoint();
-                break;
-
-        }
-
-
-
-
-
-        while (Vector3.Distance(transform.position, moveToPos.position) > 0.3f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, moveToPos.position, Time.deltaTime * mySpeed);
-            Vector3 targetDirection = (moveToPos.position - transform.position).normalized;
-            var rotation = Quaternion.LookRotation(targetDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * mySpeed);
-
-
-            //transform.rotation = Quaternion.LookRotation(newDirection);
-            yield return null;
-        }
-        yield return new WaitForSeconds(1);
-
-        StartCoroutine(Move());
-
-
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.CompareTag("Projectile")) 
-        {
-            Hit(200);
-            
-        }
+        GameEvents.ReportEnemyDie(this.gameObject);
     }
 }

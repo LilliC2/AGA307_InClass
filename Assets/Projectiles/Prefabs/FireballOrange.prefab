@@ -38921,7 +38921,7 @@ GameObject:
   - component: {fileID: 4772430082465235504}
   - component: {fileID: 4825257544039014424}
   - component: {fileID: 4887939010068699700}
-  - component: {fileID: -5402940482702248047}
+  - component: {fileID: 8992038243348815938}
   m_Layer: 0
   m_Name: FireballOrange
   m_TagString: Projectile
@@ -38984,7 +38984,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5402940482702248047
+--- !u!114 &8992038243348815938
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -38993,7 +38993,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4771011118064378264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2131fb3a71d06c644bc60649510f840c, type: 3}
+  m_Script: {fileID: 11500000, guid: 295d9a3899fe2af4ea0a2bb734ca818b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4771012519701181538

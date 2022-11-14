@@ -4,32 +4,25 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public int myDamage = 20;
     void Start()
     {
-        
-
-        Destroy(gameObject,5f);
+        Destroy(this.gameObject, 5);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.CompareTag("Target"))
+        //Check if we hit the object tagged enemy
+        if(collision.gameObject.CompareTag("Enemy"))
         {
-            //Debug.Log(collision.gameObject.name);
-            //check ig we hit the object tagged target
-
-            //change colour of target
-            //to be colour specific; new Color.(R,G.B)
-            collision.gameObject.GetComponent<Renderer>().material.color = Color.red;
-
-            //destroy target after 1 sec
-
-            Destroy(collision.gameObject,1);
-
-            //destroy this object
-            Destroy(gameObject);
+            if(collision.gameObject.GetComponent<Enemy>() != null)
+            {
+                //Run the Hit function on our Enemy
+                collision.gameObject.GetComponent<Enemy>().Hit(myDamage);
+                //destroy this object
+                Destroy(gameObject);
+            }
         }
+
     }
-
-
 }
