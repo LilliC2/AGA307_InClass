@@ -827,9 +827,10 @@ GameObject:
   - component: {fileID: 461210}
   - component: {fileID: 3337786}
   - component: {fileID: 2365288}
+  - component: {fileID: 5117228530811957123}
   m_Layer: 0
   m_Name: Axe
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -899,6 +900,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5117228530811957123
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136750}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.0926377
+  m_Height: 0.7918086
+  m_Direction: 2
+  m_Center: {x: -0.009646438, y: -0.0051572197, z: 0.1131459}
 --- !u!1 &138828
 GameObject:
   m_ObjectHideFlags: 0
@@ -2258,7 +2273,7 @@ Animator:
   m_GameObject: {fileID: 188982}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 20300ac630e0fcd4dbab63a9b39cdafa, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 36a8b6dfe8fafee4582c14d7e90f0d30, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1

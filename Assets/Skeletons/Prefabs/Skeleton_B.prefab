@@ -608,9 +608,10 @@ GameObject:
   - component: {fileID: 401468}
   - component: {fileID: 3335292}
   - component: {fileID: 2317216}
+  - component: {fileID: 9060466354581962367}
   m_Layer: 0
   m_Name: Mace
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -680,6 +681,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &9060466354581962367
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132522}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.13665198
+  m_Height: 0.779058
+  m_Direction: 2
+  m_Center: {x: 0.0013719223, y: -0.006284843, z: 0.16465926}
 --- !u!1 &133966
 GameObject:
   m_ObjectHideFlags: 0
@@ -1482,7 +1497,7 @@ Animator:
   m_GameObject: {fileID: 165576}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 20300ac630e0fcd4dbab63a9b39cdafa, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 36a8b6dfe8fafee4582c14d7e90f0d30, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1

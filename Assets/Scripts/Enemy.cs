@@ -11,6 +11,7 @@ public class Enemy : GameBehaviour
     public float mySpeed;
     public float myHealth;
     float myMaxHealth;
+    public float attackRadius = 5;
 
     [Header("AI")]
     public PatrolType myPatrol;
@@ -25,8 +26,11 @@ public class Enemy : GameBehaviour
     public TMP_Text healthBarText;
 
 
+
+    Animator anim;
     void Start()
     {
+        anim = GetComponent<Animator>();
         Setup();
         SetupAI();
         StartCoroutine(Move());
@@ -109,6 +113,12 @@ public class Enemy : GameBehaviour
         transform.LookAt(moveToPos);
         while (Vector3.Distance(transform.position, moveToPos.position) > 0.3f)
         {
+            if(Vector3.Distance(_P.transform.position, transform.position) < attackRadius)
+            {
+                Attack();
+                yield break;
+            }
+
             transform.position = Vector3.MoveTowards(transform.position, moveToPos.position, Time.deltaTime * mySpeed);
             yield return null;
         }
@@ -134,10 +144,23 @@ public class Enemy : GameBehaviour
         }
         else
         {
+            PlayAnimation("Hit");
+
             GameEvents.ReportEnemyHit(this.gameObject);
         }
     }
     
+    IEnumerator Attack()
+    {
+        print("ATTACK");
+        PlayAnimation("Attack");
+
+        yield return new WaitForSeconds(1);
+        StartCoroutine(Move());
+
+
+    }
+
     void UpdateHealthBar()
     {
         healthBarSlider.value = myHealth;
@@ -146,7 +169,17 @@ public class Enemy : GameBehaviour
 
     void Die()
     {
+        GetComponent<Collider>().enabled = false;
+        PlayAnimation("Die");
+
         StopAllCoroutines();
         GameEvents.ReportEnemyDie(this.gameObject);
+    }
+
+
+    void PlayAnimation(string _anim)
+    {
+        int ranAnim = UnityEngine.Random.Range(1, 4);
+        anim.SetTrigger(_anim + ranAnim);
     }
 }
