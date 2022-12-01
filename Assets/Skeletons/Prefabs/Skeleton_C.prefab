@@ -827,9 +827,10 @@ GameObject:
   - component: {fileID: 461210}
   - component: {fileID: 3337786}
   - component: {fileID: 2365288}
+  - component: {fileID: 5117228530811957123}
   m_Layer: 0
   m_Name: Axe
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -899,6 +900,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5117228530811957123
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136750}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.0926377
+  m_Height: 0.7918086
+  m_Direction: 2
+  m_Center: {x: -0.009646438, y: -0.0051572197, z: 0.1131459}
 --- !u!1 &138828
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,6 +2236,7 @@ GameObject:
   - component: {fileID: 9520798}
   - component: {fileID: -5963465024571112291}
   - component: {fileID: -9170734635443486997}
+  - component: {fileID: 7440435655272636192}
   m_Layer: 0
   m_Name: Skeleton_C
   m_TagString: Enemy
@@ -2258,7 +2274,7 @@ Animator:
   m_GameObject: {fileID: 188982}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 20300ac630e0fcd4dbab63a9b39cdafa, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 36a8b6dfe8fafee4582c14d7e90f0d30, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -2283,6 +2299,7 @@ MonoBehaviour:
   myType: 0
   mySpeed: 2
   myHealth: 100
+  attackRadius: 1
   myPatrol: 0
   patrolPoint: 0
   reverse: 0
@@ -2305,6 +2322,28 @@ CapsuleCollider:
   m_Height: 1.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: 0}
+--- !u!195 &7440435655272636192
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188982}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &189416
 GameObject:
   m_ObjectHideFlags: 0

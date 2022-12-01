@@ -8,7 +8,7 @@ public enum EnemyType
 }
 public enum PatrolType
 {
-    Linear, Random, Loop
+    Patrol, Detect, Chase, Attack, Die
 }
 
 public class EnemyManager : Singleton<EnemyManager>
@@ -95,7 +95,7 @@ public class EnemyManager : Singleton<EnemyManager>
         if (enemies.Count == 0)
             return;
 
-        Destroy(_enemy);
+        Destroy(_enemy,3);
         enemies.Remove(_enemy);
         _UI.UpdateEnemyCount(enemies.Count);
     }
