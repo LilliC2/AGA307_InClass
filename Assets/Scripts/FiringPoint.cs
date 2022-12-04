@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FiringPoint : MonoBehaviour
+public class FiringPoint : GameBehaviour
 {
     public GameObject projectilePrefab;
     public GameObject hitSparks;
     public float projectileSpeed = 1000f;
     public LineRenderer laser;
+
+
 
     void Update()
     {
@@ -23,6 +25,7 @@ public class FiringPoint : MonoBehaviour
 
     void FireRigidProjectile()
     {
+        
         //Create a reference to hold our instantiated object
         GameObject projectileInstance;
         //Instantiate our projectile prefab at this objects position and rotation 
@@ -58,4 +61,6 @@ public class FiringPoint : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         laser.gameObject.SetActive(false);
     }
+
+
 }

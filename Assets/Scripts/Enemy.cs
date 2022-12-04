@@ -1,4 +1,4 @@
-using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -32,6 +32,8 @@ public class Enemy : GameBehaviour
     public Slider healthBarSlider;
     public TMP_Text healthBarText;
 
+    AudioSource audioSource;
+
 
 
     Animator anim;
@@ -39,6 +41,7 @@ public class Enemy : GameBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         Setup();
         SetupAI();
         transform.SetPositionAndRotation(transform.position, transform.rotation);
@@ -108,7 +111,6 @@ public class Enemy : GameBehaviour
     {
         agent.speed = _speed;
     }
-
 
     //IEnumerator Move()
     //{
@@ -215,6 +217,7 @@ public class Enemy : GameBehaviour
         }
         else
         {
+            PlaySound(_AM.GetEnemyHitSound());
             PlayAnimation("Hit");
 
             GameEvents.ReportEnemyHit(this.gameObject);
@@ -224,7 +227,6 @@ public class Enemy : GameBehaviour
     IEnumerator Attack()
     {
         myPatrol = PatrolType.Attack;
-        print("ATTACK");
         ChangeSpeed(0);
         PlayAnimation("Attack");
 
@@ -242,6 +244,9 @@ public class Enemy : GameBehaviour
 
     void Die()
     {
+        PlaySound(_AM.GetEnemyDieSound());
+
+
         ChangeSpeed(0);
         myPatrol = PatrolType.Die;
         GetComponent<Collider>().enabled = false;
@@ -251,9 +256,24 @@ public class Enemy : GameBehaviour
         GameEvents.ReportEnemyDie(this.gameObject);
     }
 
+    void PlaySound(AudioClip _clip)
+    {
+        if (audioSource != null)//fail safe, only play if there is an audio source
+        {
+            audioSource.clip = _clip; 
+            audioSource.pitch = Random.Range(0.9f, 1.1f); //slighty change pitch to add variation
+            audioSource.Play();
+        }
+    }
+
     void PlayAnimation(string _anim)
     {
         int ranAnim = UnityEngine.Random.Range(1, 4);
         anim.SetTrigger(_anim + ranAnim);
+    }
+
+    public void Footstep()
+    {
+        PlaySound(_AM.GetFootsteps());
     }
 }
